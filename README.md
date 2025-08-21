@@ -15,7 +15,8 @@ All data is stored in **localStorage**, so your transactions remain saved even a
 - ✅ **Add transactions** with description and amount  
 - ✅ **Separate income and expenses**  
 - ✅ **Automatic balance calculation**  
-- ✅ **Delete individual transactions**  
+- ✅ **Delete individual transactions**
+- ✅ **Update individual transactions**  
 - ✅ **Data persistence** using browser `localStorage`  
 - ✅ **Responsive UI** for mobile and desktop  
 
