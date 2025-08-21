@@ -7,14 +7,6 @@ const text = document.getElementById("text");
 const amount = document.getElementById("amount");
 const notification = document.getElementById("notification");
 
-// const dummyTransactions = [
-//   { id: 1, text: "Flower", amount: -20 },
-//   { id: 2, text: "Salary", amount: 300 },
-//   { id: 3, text: "Book", amount: -10 },
-//   { id: 4, text: "Camera", amount: 150 },
-// ];
-
-// let transactions = dummyTransactions;
 
 const localStorageTransactions = JSON.parse(
   localStorage.getItem("transactions")
@@ -39,32 +31,44 @@ function generateID() {
 
 function addTransaction(e) {
   e.preventDefault();
+
   if (text.value.trim() === "" || amount.value.trim() === "") {
     showNotification();
   } else {
-    const transaction = {
-      id: generateID(),
-      text: text.value,
-      amount: +amount.value,
-    };
-    transactions.push(transaction);
-    addTransactionDOM(transaction);
-    updateValues();
+    if (editID) {
+      transactions = transactions.map((t) =>
+        t.id === editID ? { ...t, text: text.value, amount: +amount.value } : t
+      );
+      editID = null;
+      document.querySelector(".btn").textContent = "Add transaction";
+    } else {
+      
+      const transaction = {
+        id: generateID(),
+        text: text.value,
+        amount: +amount.value,
+      };
+      transactions.push(transaction);
+    }
+
     updateLocaleStorage();
+    init();
     text.value = "";
     amount.value = "";
   }
 }
+
 
 function addTransactionDOM(transaction) {
   const sign = transaction.amount < 0 ? "-" : "+";
   const item = document.createElement("li");
   item.classList.add(sign === "+" ? "plus" : "minus");
   item.innerHTML = `
-          ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span
-          ><button class="delete-btn" onclick="removeTransaction(${
-            transaction.id
-          })"><i class="fa fa-times"></i></button>
+          ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span>
+          <div>
+            <button class="edit-btn" onclick="editTransaction(${transaction.id})"><i class="fa fa-edit"></i></button>
+            <button class="delete-btn" onclick="removeTransaction(${transaction.id})"><i class="fa fa-times"></i></button>
+          </div>
     `;
   list.appendChild(item);
 }
@@ -94,7 +98,18 @@ function removeTransaction(id) {
   init();
 }
 
-// Init
+let editID = null;
+
+function editTransaction(id) {
+  const transaction = transactions.find((t) => t.id === id);
+  if (transaction) {
+    text.value = transaction.text;
+    amount.value = transaction.amount;
+    editID = id;
+    document.querySelector(".btn").textContent = "Update Transaction";
+  }
+}
+
 function init() {
   list.innerHTML = "";
   transactions.forEach(addTransactionDOM);
