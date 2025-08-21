@@ -193,6 +193,29 @@ input[type="number"] {
   opacity: 1;
 }
 
+.edit-btn {
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  color: var(--background-secondary-color);
+  box-shadow: var(--box-shadow);
+  border: 0;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 8px;
+  margin: 10px 5px;
+  position: absolute;
+  top: 50%;
+  right: 45px;
+  transform: translate(100%, -73%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.list li:hover .edit-btn {
+  opacity: 1;
+}
+
+
 .notification-container {
   background-color: var(--minus-color);
   color: var(--background-secondary-color);
